@@ -2,15 +2,11 @@
 
 Welcome to **UniRoll**, an advanced academic management platform that simplifies the student registration and advisory process for universities and colleges.
 
-![UniRoll Banner](./assets/banner.png)
-
 ---
 
 ## 🧩 Concept
 
 **UniRoll** serves as a unified platform that connects students, advisors, and administrators, streamlining the entire academic registration and advisory system.
-
-![Concept Diagram](./assets/concept.png)
 
 ---
 
@@ -47,15 +43,11 @@ For demo purposes:
 - **Timetable Generation:** View a personalized class timetable based on registered courses.
 - **Profile Dashboard:** Displays student info, registration details, and advisor assignment status.
 
-![Student Dashboard](./assets/student_dashboard.png)
-
 ### 👨‍🏫 Advisor Portal
 
 - **Student Overview:** Advisors can view and manage their assigned students.
 - **Advisory Management:** Approve or decline student registrations if required.
 - **Student Load Tracking:** Check total credits and registered courses for each student.
-
-![Advisor Dashboard](./assets/advisor_dashboard.png)
 
 ### 🧑‍💼 Admin Dashboard
 
@@ -64,7 +56,6 @@ For demo purposes:
 - **Sorted Listings:** Data is displayed in sorted order for clarity.
 - **Secure APIs:** Passwords are never sent to the frontend.
 
-![Admin Dashboard](./assets/admin_dashboard.png)
 
 ---
 

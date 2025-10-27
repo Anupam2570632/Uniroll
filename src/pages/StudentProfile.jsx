@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import {
   Paper,
@@ -16,9 +16,7 @@ import { AuthContext } from "../Provider/AuthProvider/authContext";
 
 export default function StudentProfile() {
   const [profile, setProfile] = useState(null);
-
-  const {user}= React.useContext(AuthContext);
-
+  const { user } = useContext(AuthContext);
   const studentId = user.studentId;
 
   useEffect(() => {
@@ -26,7 +24,7 @@ export default function StudentProfile() {
       .get(`http://localhost:3001/studentProfile/${studentId}`)
       .then((res) => setProfile(res.data))
       .catch(() => toast.error("Failed to fetch student profile"));
-  }, []);
+  }, [studentId]);
 
   if (!profile) return <Typography textAlign="center">Loading...</Typography>;
 
@@ -47,6 +45,11 @@ export default function StudentProfile() {
         <Typography>
           <strong>Department:</strong> {profile.student.dept_name}
         </Typography>
+        {profile.student.currentSemester && (
+          <Typography>
+            <strong>Current Semester:</strong> {profile.student.currentSemester}
+          </Typography>
+        )}
       </Box>
 
       <Divider sx={{ my: 2 }} />
@@ -73,27 +76,23 @@ export default function StudentProfile() {
                 <TableCell>
                   <strong>Course Name</strong>
                 </TableCell>
-                <TableCell>
-                  <strong>Credit</strong>
-                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {profile.registration.courses.map((cId) => {
-                const course =
-                  profile.timetable.find((t) => t.course.includes(cId)) || {};
-                return (
-                  <TableRow key={cId}>
-                    <TableCell>{cId}</TableCell>
-                    <TableCell>{course.course || "N/A"}</TableCell>
-                    <TableCell>
-                      {profile.timetable.find((t) => t.course === course.course)
-                        ? "-"
-                        : ""}
-                    </TableCell>
+              {profile.regCourse && profile.regCourse.length > 0 ? (
+                profile.regCourse.map((course) => (
+                  <TableRow key={course.courseId}>
+                    <TableCell>{course.courseId}</TableCell>
+                    <TableCell>{course.name}</TableCell>
                   </TableRow>
-                );
-              })}
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={2} align="center">
+                    No registered courses found.
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </>
@@ -109,30 +108,36 @@ export default function StudentProfile() {
       <Typography variant="h6" mb={1}>
         Timetable
       </Typography>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <strong>Day</strong>
-            </TableCell>
-            <TableCell>
-              <strong>Course</strong>
-            </TableCell>
-            <TableCell>
-              <strong>Time</strong>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {profile.timetable.map((t, index) => (
-            <TableRow key={index}>
-              <TableCell>{t.day}</TableCell>
-              <TableCell>{t.course}</TableCell>
-              <TableCell>{t.time}</TableCell>
+      {profile.timetable && profile.timetable.length > 0 ? (
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <strong>Day</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Course</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Time</strong>
+              </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {profile.timetable.map((t, index) => (
+              <TableRow key={index}>
+                <TableCell>{t.day}</TableCell>
+                <TableCell>{t.course}</TableCell>
+                <TableCell>{t.time}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      ) : (
+        <Typography color="text.secondary" textAlign="center">
+          No timetable available.
+        </Typography>
+      )}
     </Paper>
   );
 }

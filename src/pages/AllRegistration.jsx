@@ -67,7 +67,7 @@ export default function RegistrationList() {
   };
 
   return (
-    <Paper sx={{ p: 4, maxWidth: 1100, mx: "auto", mt: 4 }}>
+    <Paper sx={{ p: 4, maxWidth: 1300, mx: "auto", mt: 4 }}>
       <Typography variant="h5" mb={3} textAlign="center">
         Registrations
       </Typography>

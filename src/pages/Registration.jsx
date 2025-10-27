@@ -26,6 +26,7 @@ export default function Registration() {
 
   const { user } = useContext(AuthContext);
 
+  // Fetch semesters
   useEffect(() => {
     axios
       .get("http://localhost:3001/semesters")
@@ -33,8 +34,7 @@ export default function Registration() {
       .catch(() => toast.error("Failed to fetch semesters"));
   }, []);
 
-  
-
+  // Fetch courses by semester
   useEffect(() => {
     if (!selectedSemester) return;
 
@@ -44,31 +44,44 @@ export default function Registration() {
       .catch(() => toast.error("Failed to fetch courses"));
   }, [selectedSemester]);
 
-  // Handle course checkbox toggle
+  // Handle course checkbox toggle with 18 credit limit
   const toggleCourse = (course) => {
     const exists = selectedCourses.find((c) => c._id === course._id);
     let updatedCourses;
+
     if (exists) {
       updatedCourses = selectedCourses.filter((c) => c._id !== course._id);
     } else {
       updatedCourses = [...selectedCourses, course];
     }
+
+    const newTotalCredit = updatedCourses.reduce((sum, c) => sum + c.credit, 0);
+
+    // ✅ Prevent credit from exceeding 18
+    if (newTotalCredit > 18) {
+      toast.error("Total credit cannot exceed 18!");
+      return;
+    }
+
     setSelectedCourses(updatedCourses);
-    setTotalCredit(updatedCourses.reduce((sum, c) => sum + c.credit, 0));
+    setTotalCredit(newTotalCredit);
+
     setValue(
       "courses",
       updatedCourses.map((c) => c._id)
     );
-    setValue(
-      "total_credit",
-      updatedCourses.reduce((sum, c) => sum + c.credit, 0)
-    );
+    setValue("total_credit", newTotalCredit);
   };
 
   // Submit handler
   const onSubmit = (data) => {
     if (!selectedCourses.length) {
       toast.error("Please select at least one course");
+      return;
+    }
+
+    if (totalCredit > 18) {
+      toast.error("Total credit cannot exceed 18!");
       return;
     }
 
