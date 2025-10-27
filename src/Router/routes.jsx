@@ -12,6 +12,8 @@ import CourseListWithStudent from "../pages/CourseEnrolledStudent.jsx";
 import StudentList from "../pages/AllStudents.jsx";
 import AddAdvisorForm from "../pages/AddAdvisor.jsx";
 import RegistrationList from "../pages/AllRegistration.jsx";
+import StudentProfile from "../pages/StudentProfile.jsx";
+import AdminProfile from "../pages/Adminprofile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +60,14 @@ const router = createBrowserRouter([
       {
         path: "/courseRegistrations",
         element: <RegistrationList />,
+      },
+      {
+        path: "/studentProfile",
+        element: <StudentProfile />,
+      },
+      {
+        path: "/adminProfile",
+        element: <AdminProfile />,
       },
     ],
   },

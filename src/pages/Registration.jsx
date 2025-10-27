@@ -33,6 +33,8 @@ export default function Registration() {
       .catch(() => toast.error("Failed to fetch semesters"));
   }, []);
 
+  
+
   useEffect(() => {
     if (!selectedSemester) return;
 

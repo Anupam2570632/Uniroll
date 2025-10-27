@@ -192,13 +192,15 @@ export default function AuthPage() {
               ? "Login"
               : "Sign In"}
           </button>
-          <h1 className="text-center">
-            Haven't any account yet
-            <Link to="/signup" className="text-blue-600 hover:underline">
-              {" "}
-              Sign Up
-            </Link>
-          </h1>
+          {!isAdmin && (
+            <h1 className="text-center">
+              Haven't any account yet
+              <Link to="/signup" className="text-blue-600 hover:underline">
+                {" "}
+                Sign Up
+              </Link>
+            </h1>
+          )}
         </form>
       </div>
     </div>

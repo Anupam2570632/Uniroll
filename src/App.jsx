@@ -22,13 +22,14 @@ import {
   Book,
   FileText,
   ListCheck,
+  ListStart,
   LogOutIcon,
   Pen,
   User,
+  User2,
   Users,
 } from "lucide-react";
 import toast from "react-hot-toast";
-import { shouldSkipGeneratingVar } from "@mui/material";
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
@@ -69,6 +70,18 @@ function ResponsiveDrawer(props) {
   }, [reload]);
 
   const menuItems = [
+    {
+      text: "Profile",
+      path: "/studentProfile",
+      show: isStudent,
+      IconComponent: User2,
+    },
+    {
+      text: "Overview",
+      path: "/adminProfile",
+      show: isAdmin,
+      IconComponent: ListStart,
+    },
     {
       text: "All Course",
       path: "/allCourse",
@@ -116,12 +129,6 @@ function ResponsiveDrawer(props) {
       path: "/courseRegistrations",
       show: isAdmin,
       IconComponent: Pen,
-    },
-    {
-      text: "Drafts",
-      path: "/drafts",
-      show: isStudent,
-      IconComponent: FileText,
     },
   ];
 

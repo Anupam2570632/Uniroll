@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,7 +7,8 @@ import toast from "react-hot-toast";
 
 export default function StudentSignUp() {
   const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate();
+  const [departments, setDepartments] = useState([]);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -22,16 +23,20 @@ export default function StudentSignUp() {
     },
   });
 
+  // Fetch department list from server
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/departments")
+      .then((res) => setDepartments(res.data.departments))
+      .catch(() => toast.error("Failed to fetch departments"));
+  }, []);
+
   const submitHandler = async (data) => {
     try {
       const response = await axios.post("http://localhost:3001/signup", data);
-      console.log(response.data);
       toast.success(response.data.message || "Student Created Successfully!");
-      navigate('/login')
+      navigate("/login");
     } catch (error) {
-      console.log(error);
-
-      // Fallback message handling
       const errMsg =
         error.response?.data?.message || "Signup failed! Please try again.";
       toast.error(errMsg);
@@ -93,20 +98,28 @@ export default function StudentSignUp() {
             )}
           </div>
 
-          {/* dept name */}
+          {/* Department Select */}
           <div>
-            <label htmlFor="dept_name" className="block text-sm font-medium mb-1">
+            <label
+              htmlFor="dept_name"
+              className="block text-sm font-medium mb-1"
+            >
               Department Name
             </label>
-            <input
+            <select
               id="dept_name"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your name"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
               {...register("dept_name", {
                 required: "Department name is required",
-                // minLength: { value: 2, message: "Name is too short" },
               })}
-            />
+            >
+              <option value="">Select a department</option>
+              {departments.map((dept, index) => (
+                <option key={index} value={dept}>
+                  {dept}
+                </option>
+              ))}
+            </select>
             {errors.dept_name && (
               <p className="text-sm text-red-600 mt-1">
                 {errors.dept_name.message}
@@ -149,6 +162,7 @@ export default function StudentSignUp() {
             )}
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-50"
@@ -158,7 +172,7 @@ export default function StudentSignUp() {
           </button>
 
           <h1 className="text-center">
-            Already have an account
+            Already have an account?
             <Link to="/login" className="text-blue-600 hover:underline">
               {" "}
               Sign In
