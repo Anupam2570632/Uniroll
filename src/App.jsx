@@ -1,5 +1,5 @@
 import * as React from "react";
-import PropTypes from "prop-types";
+import PropTypes, { shape } from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -25,6 +25,7 @@ import {
   ListStart,
   LogOutIcon,
   Pen,
+  School,
   User,
   User2,
   Users,
@@ -130,6 +131,12 @@ function ResponsiveDrawer(props) {
       show: isAdmin,
       IconComponent: Pen,
     },
+    {
+      text:"All Dept.",
+      path:"/allDept",
+      show: isAdmin,
+      IconComponent: School
+    }
   ];
 
   const drawer = (

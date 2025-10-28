@@ -14,6 +14,7 @@ import AddAdvisorForm from "../pages/AddAdvisor.jsx";
 import RegistrationList from "../pages/AllRegistration.jsx";
 import StudentProfile from "../pages/StudentProfile.jsx";
 import AdminProfile from "../pages/Adminprofile.jsx";
+import AllDepartments from "../pages/AllDepartments.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <CourseList />,
+        element: <AdminProfile />,
       },
       {
         path: "/addCourse",
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: "/adminProfile",
         element: <AdminProfile />,
+      },
+      {
+        path: "/allDept",
+        element: <AllDepartments />,
       },
     ],
   },
